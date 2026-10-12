@@ -1,8 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IR Deck | AI // UNBOUND</title><style>
 *{box-sizing:border-box}body{margin:0;background:#031016;color:#fff;font:16px Arial,sans-serif}header{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#031016;padding:16px 24px;border-bottom:1px solid #344b39}h1{font-size:20px;margin:0;color:#b4ee70}.controls{display:flex;align-items:center;gap:12px}button,a{font:13px Arial,sans-serif;color:#b4ee70}button{border:1px solid #344b39;background:transparent;padding:9px 14px;cursor:pointer}button:disabled{opacity:.4;cursor:default}a{text-decoration:none}a:hover{text-decoration:underline}main{max-width:1280px;margin:auto;padding:24px}canvas{display:block;width:100%;height:auto;box-shadow:0 4px 24px #0008;background:#fff}#status{color:#abbabd;text-align:center;margin:18px}#page{min-width:65px;text-align:center}@media(max-width:600px){header{padding:14px}main{padding:12px}.controls{width:100%;justify-content:center}h1{font-size:18px}}
-</style></head><body><header><h1 id="title">IR Deck</h1><a href="index.html#startups">BACK TO COMPANIES</a><div class="controls"><button id="prev" disabled aria-label="Previous page">←</button><span id="page" aria-live="polite">—</span><button id="next" disabled aria-label="Next page">→</button><a id="download" download>DOWNLOAD PDF</a></div></header><main><p id="status" role="status">Loading IR deck…</p><canvas id="canvas" hidden aria-label="IR presentation slide"></canvas></main>
+</style></head><body><header><h1 id="title">IR Deck</h1><a href="index.html#startups">BACK TO COMPANIES</a><div class="controls"><button id="prev" disabled aria-label="Previous page">←</button><span id="page" aria-live="polite">—</span><button id="next" disabled aria-label="Next page">→</button></div></header><main><p id="status" role="status">Loading IR deck…</p><canvas id="canvas" hidden aria-label="IR presentation slide"></canvas></main>
 <script type="module">
-const names={solverx:'SolverX',innotion:'Innotion Tech'};
+const names={"banf":"BANF","bestturn":"BestTurn","libeco":"LIBECO E&C","metacrowd":"Metacrowd","onecheck":"OneCheck","batterfly":"Batterfly","p2ach":"P2ACH AI","semiai":"SemiAI","solverx":"SolverX","vanam":"VanaM","colosseum":"Colosseum Corporation","innotion":"Innotion Tech","xpanner":"Xpanner","flydove":"Flydove"};
 const slug=new URLSearchParams(location.search).get('company');
 const status=document.getElementById('status'),canvas=document.getElementById('canvas'),prev=document.getElementById('prev'),next=document.getElementById('next'),counter=document.getElementById('page');
 let pdf,pageNumber=1,busy=false;
@@ -14,7 +14,7 @@ async function render(){
  canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
  await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
  canvas.hidden=false;status.hidden=true;counter.textContent=pageNumber+' / '+pdf.numPages;canvas.setAttribute('aria-label',names[slug]+' IR deck, page '+pageNumber+' of '+pdf.numPages);
- }catch(e){status.textContent='This page could not load. Please use DOWNLOAD PDF.';}
+ }catch(e){status.textContent='This page could not load. Please refresh and try again.';}
  finally{busy=false;prev.disabled=pageNumber<=1;next.disabled=pageNumber>=pdf.numPages;}
 }
 prev.addEventListener('click',()=>{if(!busy&&pageNumber>1){pageNumber--;render();}});
@@ -23,10 +23,9 @@ try{
  if(!names[slug])throw Error('Unknown company');
  document.getElementById('title').textContent=names[slug]+' · IR DECK';document.title=names[slug]+' IR Deck | AI // UNBOUND';
  const url=slug+'-ir.pdf?v='+ (slug==='innotion'?'20261012-new':'20261012-viewer');
- document.getElementById('download').href=url;
  const lib=await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/build/pdf.mjs');
  lib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/build/pdf.worker.mjs';
  pdf=await lib.getDocument({url,standardFontDataUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/standard_fonts/',wasmUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/wasm/'}).promise;
  await render();
-}catch(e){status.textContent='The IR deck could not load. Please use DOWNLOAD PDF.';}
+}catch(e){status.textContent='The IR deck could not load. Please refresh and try again.';}
 </script></body></html>
