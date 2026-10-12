@@ -22,7 +22,7 @@ next.addEventListener('click',()=>{if(!busy&&pdf&&pageNumber<pdf.numPages){pageN
 try{
  if(!names[slug])throw Error('Unknown company');
  document.getElementById('title').textContent=names[slug]+' · IR DECK';document.title=names[slug]+' IR Deck | AI // UNBOUND';
- const url=slug+'-ir.pdf?v='+ (slug==='innotion'?'20261012-new':'20261012-viewer');
+ const url=slug+'-ir.pdf?v='+ (slug==='onecheck'?'20261012-3min':slug==='innotion'?'20261012-new':'20261012-viewer');
  const lib=await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/build/pdf.mjs');
  lib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/build/pdf.worker.mjs';
  pdf=await lib.getDocument({url,standardFontDataUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/standard_fonts/',wasmUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/wasm/'}).promise;
